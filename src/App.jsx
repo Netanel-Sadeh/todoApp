@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const TodoList = () => {
     const [todos, setTodos] = useState([]);
     const [newTask, setNewTask] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchTodos = async () => {
@@ -37,6 +38,10 @@ const TodoList = () => {
         setNewTask("");
     };
 
+    const filteredTodos = todos.filter(todo =>
+        todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div>
             <h1>To-Do List</h1>
@@ -49,8 +54,17 @@ const TodoList = () => {
             />
             <button onClick={addTask}>Add new task</button>
 
+            <div>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search task"
+                />
+            </div>
+
             <ul>
-                {todos.map((todo) => (
+                {filteredTodos.map((todo) => (
                     <li key={todo.id} className={todo.completed ? "completed" : "not-completed"}>
                         {todo.title}
                         <div><button onClick={() => toggleComplete(todo.id)} disabled={todo.completed}>
