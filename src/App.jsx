@@ -6,18 +6,29 @@ const TodoList = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        const fetchTodos = async () => {
-            try {
-                const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10");
-                const data = await response.json();
-                setTodos(data);
-            } catch (error) {
-                console.error("Error fetching todos:", error);
-            }
-        };
-
-        fetchTodos();
+        // Load from localStorage or fetch from API if empty
+        const savedTodos = JSON.parse(localStorage.getItem("todos"));
+        if (savedTodos && savedTodos.length > 0) {
+            setTodos(savedTodos);
+        } else {
+            const fetchTodos = async () => {
+                try {
+                    const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10");
+                    const data = await response.json();
+                    setTodos(data);
+                } catch (error) {
+                    console.error("Error fetching todos:", error);
+                }
+            };
+            fetchTodos();
+        }
     }, []);
+
+    useEffect(() => {
+        if (todos.length > 0) {
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+    }, [todos]);
 
     const toggleComplete = (id) => {
         setTodos(todos.map(todo =>
@@ -59,7 +70,7 @@ const TodoList = () => {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search task"
+                    placeholder="Search..."
                 />
             </div>
 
@@ -72,7 +83,6 @@ const TodoList = () => {
                         </button></div>
                     </li>
                 ))}
-
             </ul>
         </div>
     );
