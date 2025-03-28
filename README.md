@@ -5,7 +5,7 @@ A simple app that helps you manage your tasks.
 ## Features
 - Fetches tasks from an external API.
 - Allows users to mark tasks as completed.
-- Option to add new tasks.
+- Allows adding new tasks and searching for existing tasks.
 
 ## Installation
 
