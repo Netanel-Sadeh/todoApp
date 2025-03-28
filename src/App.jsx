@@ -51,7 +51,7 @@ const TodoList = () => {
 
             <ul>
                 {todos.map((todo) => (
-                    <li key={todo.id} style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
+                    <li key={todo.id} className={todo.completed ? "completed" : "not-completed"}>
                         {todo.title}
                         <div><button onClick={() => toggleComplete(todo.id)} disabled={todo.completed}>
                             {todo.completed ? "Completed" : "Mark as completed"}
